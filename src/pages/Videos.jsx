@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import VideoCard from "../components/VideoCard";
+import {Grid, Card, CardContent } from '@mui/material';
 
+const keywordUri = `https://youtube.googleapis.com/youtube/v3/search?key=${process.env.REACT_APP_YOUTUBE_API_KEY}&maxResults=25&part=snippet&q=`;
+const popularUri = `https://youtube.googleapis.com/youtube/v3/videos?chart=mostPopular&key=${process.env.REACT_APP_YOUTUBE_API_KEY}&maxResults=25&part=snippet`;
 
 export default function Videos() {
   const { keyword } = useParams();
-  // const [videos, setVideos] = useState([]);
   const {isLoading, error, data: videos} = useQuery({
     queryKey: ['videos', keyword],
     queryFn: async () => {
+      const uri = keyword ? keywordUri + keyword : popularUri;
       return axios
-              .get(`/data/${keyword ? 'search' : 'popular'}.json`)
+              // .get(`/data/${keyword ? 'search' : 'popular'}.json`)
+              .get(uri)
               .then(res => res.data.items);
     },
-    staleTime: 1000 * 60 * 1,       // 1분, ms 단위로 저장 할 수 있음
+    staleTime: 1000 * 60 * 1,       // 1분, ms 단위로 지정할 수 있음
   });
   // useEffect(() => {
   //   axios.get(`/data/${keyword ? 'search' : 'popular'}.json`)
@@ -22,18 +29,25 @@ export default function Videos() {
   //       setVideos(res.data.items);
   //       console.log(videos);
   //     });
-  // },[keyword]);
-  return(
+  // }, [keyword]);
+  return (
     <>
-    <div>Videos {keyword ? `${keyword}로 검색` : 'Hot Trend'}</div>
-    {isLoading && <p>Loading...</p>}
-    {videos && (
-      <ul>
-        {videos.map(video => (
-          <li key={video.id}>{video.snippet.title}</li>
-        ))}
-      </ul>
+      {/* <div>Videos {keyword ? `${keyword}로 검색` : 'Hot Trend'}</div> */}
+      {isLoading && <p><HourglassTopIcon /> Loading...</p>}
+      {error && <p><WarningAmberIcon /> Something is wrong!!!</p>}
+      {videos && (
+     <Grid container spacing={2}>
+     {videos.map(video => (
+       <Grid item key={video.id} lg={3} style={{marginTop:10}}>
+         <Card sx={{ height: '400px'}}>
+           <CardContent>
+             <VideoCard video={video} />
+           </CardContent>
+         </Card>
+       </Grid>
+     ))}
+   </Grid>
       )}
     </>
-  );
+  )
 }
