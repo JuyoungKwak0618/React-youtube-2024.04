@@ -10,7 +10,7 @@ export default function VideoCard({ video }) {
   const videoId = typeof(video.id) === 'string' ? video.id : video.id.videoId; 
   return (
     <li style={{ listStyleType: 'none' }} onClick={() => {
-      navigate(`/videos/watch/${videoId}`, {state: {video}, })
+      navigate(`/videos/watch/${videoId}`, {state: {video}})
 
     }}>
       <img src={thumbnails.medium.url} alt={title} />
