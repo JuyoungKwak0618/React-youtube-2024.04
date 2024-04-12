@@ -19,7 +19,7 @@ export default function RelatedVideos({ id, name }) {
   //   },
   //   staleTime: 1000 * 60 * 1,   // 1분
   // });
-  const {isLoading, error, videos } = useRelatedVideo(channerId);
+  const {isLoading, error, videos } = useRelatedVideo(id);
 
   return (
     <>

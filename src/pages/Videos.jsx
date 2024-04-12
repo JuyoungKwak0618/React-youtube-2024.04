@@ -24,6 +24,7 @@ export default function Videos() {
   //   },
   //   staleTime: 1000 * 60 * 1,       // 1분, ms 단위로 지정할 수 있음
   // });
+  
   // useEffect(() => {
   //   axios.get(`/data/${keyword ? 'search' : 'popular'}.json`)
   //     .then(res => {
