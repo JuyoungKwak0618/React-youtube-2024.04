@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { register } from '../api/firebase';
+import { register, loginWithGithub } from '../api/firebase';
 
 export default function SignUp() {
   const [userInfo, setUserInfo] = useState({email:'',password:''});
@@ -9,11 +9,11 @@ export default function SignUp() {
   }
   const handleSubmit = e => {
     e.preventDefault();
-    register(userInfo)
-      .then(result => {
-        console.log(result);
-        setUser(result);
-      })
+    register(userInfo).then(setUser);
+  }
+
+  const handleGithub = e => {
+    loginWithGithub().then(setUser);
   }
 
   return (
@@ -24,7 +24,14 @@ export default function SignUp() {
         <input type="password" name='password' value={userInfo.password} placeholder="패스워드 입력"
         onChange={handleChange} /><br />
         <button onClick={handleSubmit}>사용자 등록</button>
-      </form>
+      </form><br /><br />
+      <button onClick={handleGithub}>깃허브 로그인</button>
+      <br /><br />
+        {user && <p>accessToken={user.accessToken}</p>}
+        {user && <p>email={user.email}</p>}
+        {user && <p>uid={user.uid}</p>}
+        {user && user.displayName && <p>uid={user.displayName}</p>}
+        {user && user.photoURL && <p>photoURL={user.photoURL}</p>}
     </div>
   )
 }
