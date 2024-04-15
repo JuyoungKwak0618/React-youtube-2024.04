@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider, signInWithPopup} from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, GithubAuthProvider, signInWithPopup,
+   signOut, updateProfile, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -9,15 +10,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-export async function register({ email, password }) {
-  return createUserWithEmailAndPassword(auth, email, password)
-      .then(result => result.user)
-      .catch( console.error);
+export function register({ email, password, name, photo }) {
+   createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      updateProfile(auth.currentUser, {
+      displayName: name, photoURL: photo
+    })
+  })
+    .then(() => {logout()})
+    .catch(console.error);
 }
 
-export async function loginWithGithub() {
+export function login({ email, password }) {
+  signInWithEmailAndPassword(auth, email, password)
+    .catch(console.error);
+}
+
+export function loginWithGithub() {
   const provider = new GithubAuthProvider();
-  return signInWithPopup(auth, provider)
-    .then((result) => result.user)
-    .catch(console.error) 
+  signInWithPopup(auth, provider)
+    .catch(console.error);
+}
+
+export function logout() {
+  signOut(auth).catch(console.error);
+}
+
+export function onUserStateChanged(callback) {
+  onAuthStateChanged(auth, (user) => {
+    callback(user);
+  });
 }
