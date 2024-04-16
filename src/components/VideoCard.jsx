@@ -20,5 +20,5 @@ export default function VideoCard({ video }) {
         <p>{formatAgo(publishedAt, 'ko')}</p>
       </div>
     </li>
-  )
+  );
 }

@@ -69,5 +69,5 @@ export default function SearchHeader() {
       </Stack>
       <Divider sx={{my: 1}} />
     </header>
-  )
+  );
 }

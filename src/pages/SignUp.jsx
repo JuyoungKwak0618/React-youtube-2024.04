@@ -42,5 +42,5 @@ export default function SignUp() {
       <button onClick={handleGithub}>깃허브 로그인</button>
 
     </div>
-  )
+  );
 }

@@ -32,5 +32,5 @@ export default function RelatedVideos({ id, name }) {
         </Stack>
       )}
     </>
-  )
+  );
 }

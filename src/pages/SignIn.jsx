@@ -32,5 +32,5 @@ export default function SignIn() {
       <button onClick={handleGithub}>깃허브 로그인</button>
 
     </div>
-  )
+  );
 }
