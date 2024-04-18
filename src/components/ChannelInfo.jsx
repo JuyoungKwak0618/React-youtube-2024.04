@@ -21,5 +21,5 @@ export default function ChannelInfo({ id, name}) {
      {url && <img src={url} alt={name} />}
      <h4>{name}</h4>
     </Stack>
-  )
+  );
 }
